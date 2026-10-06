@@ -1,17 +1,10 @@
 import os
 
-import boto3
 import psycopg
 from flask import Flask, jsonify, request
 from psycopg.rows import dict_row
 
 app = Flask(__name__)
-
-parameter = boto3.client("ssm").get_parameter(
-    Name=os.environ["DB_PASSWORD_PARAMETER"],
-    WithDecryption=True,
-)["Parameter"]
-db_password = parameter["Value"]
 
 
 def connect():
@@ -20,25 +13,11 @@ def connect():
         port=int(os.environ["DB_PORT"]),
         dbname=os.environ["DB_NAME"],
         user=os.environ["DB_USER"],
-        password=db_password,
+        password=os.environ["DB_PASSWORD"],
         sslmode="verify-full",
         sslrootcert="/etc/pki/tls/certs/rds-global-bundle.pem",
         row_factory=dict_row,
     )
-
-
-with connect() as connection:
-    connection.execute(
-        """
-        CREATE TABLE IF NOT EXISTS records (
-            id BIGSERIAL PRIMARY KEY,
-            title VARCHAR(200) NOT NULL,
-            content TEXT NOT NULL DEFAULT '',
-            created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-        )
-        """
-    )
-
 
 @app.get("/health")
 def health():
