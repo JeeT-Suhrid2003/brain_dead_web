@@ -72,6 +72,10 @@
         position: absolute;
         top: 0;
         left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
         color: #b0f36e;
         font-size: clamp(34px, 7vw, 76px);
         font-weight: 750;
@@ -80,6 +84,17 @@
         white-space: nowrap;
         text-shadow: 0 0 34px rgb(176 243 110 / 20%);
         will-change: transform, color;
+      }
+
+      .zombie-art {
+        color: #b0f36e;
+        font-family: "Courier New", monospace;
+        font-size: clamp(11px, 1.5vw, 16px);
+        font-weight: 400;
+        letter-spacing: 0;
+        line-height: 1.05;
+        text-shadow: none;
+        white-space: pre;
       }
 
       .screensaver__hint {
@@ -243,7 +258,12 @@
       <section class="screensaver" aria-label="Tej Group screensaver">
         <div class="screensaver__label">A little motion while you’re here</div>
         <div class="bounce-area" id="bounce-area">
-          <span class="bounce-text" id="bounce-text">Tej Group</span>
+          <span class="bounce-text" id="bounce-text">Zombie<span class="zombie-art" aria-hidden="true">   .-.
+  (o.o)
+   |=|
+  /| |\
+ //| |\\
+   |_|</span></span>
         </div>
         <div class="screensaver__hint">THE CLASSIC SCREEN-SAVER FEELING</div>
       </section>
@@ -266,7 +286,7 @@
         </div>
         <p class="message" id="message" role="status">Connect your API endpoint to enable the counter.</p>
       </section>
-      <footer>Made to keep moving <span aria-hidden="true">·</span> test 1</footer>
+      <footer>Made to keep moving <span aria-hidden="true">·</span> zombie</footer>
     </main>
     <script>const API_ENDPOINT = "https://<id>.execute-api.ap-south-1.amazonaws.com/test-stage/click";
 
