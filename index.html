@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#080b14">
+    <title>Tej Group</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #080b14;
+        color: #f4f6fb;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(ellipse at 50% 34%, rgb(27 40 74 / 36%), transparent 54%),
+          #080b14;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .page {
+        display: flex;
+        width: min(100% - 48px, 1120px);
+        min-height: 100vh;
+        margin-inline: auto;
+        flex-direction: column;
+      }
+
+      .screensaver {
+        position: relative;
+        display: flex;
+        min-height: 58vh;
+        flex: 1 0 420px;
+        flex-direction: column;
+        padding: 34px 0 22px;
+      }
+
+      .screensaver__label,
+      .screensaver__hint,
+      .eyebrow {
+        color: #8f9bb5;
+        font-size: 11px;
+        font-weight: 650;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .bounce-area {
+        position: relative;
+        flex: 1;
+        min-height: 270px;
+        overflow: hidden;
+      }
+
+      .bounce-text {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: #b0f36e;
+        font-size: clamp(34px, 7vw, 76px);
+        font-weight: 750;
+        letter-spacing: -0.065em;
+        line-height: 1;
+        white-space: nowrap;
+        text-shadow: 0 0 34px rgb(176 243 110 / 20%);
+        will-change: transform, color;
+      }
+
+      .screensaver__hint {
+        align-self: flex-end;
+        color: #515b71;
+        font-size: 9px;
+      }
+
+      .counter {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 22px 32px;
+        padding: 27px 30px 20px;
+        border: 1px solid #252c3b;
+        border-radius: 16px;
+        background: linear-gradient(115deg, rgb(19 25 39 / 96%), rgb(14 18 29 / 96%));
+        box-shadow: 0 18px 65px rgb(0 0 0 / 24%);
+      }
+
+      .counter__copy h1 {
+        margin: 8px 0 6px;
+        font-size: clamp(19px, 2.4vw, 26px);
+        font-weight: 630;
+        letter-spacing: -0.045em;
+      }
+
+      .counter__copy p,
+      .message {
+        margin: 0;
+        color: #98a2b7;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .counter__action {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+      }
+
+      .count {
+        display: grid;
+        gap: 2px;
+        text-align: right;
+      }
+
+      .count__value {
+        font-size: 26px;
+        font-variant-numeric: tabular-nums;
+        font-weight: 680;
+        letter-spacing: -0.05em;
+      }
+
+      .count__label {
+        color: #79849b;
+        font-size: 10px;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+
+      .click-button {
+        display: inline-flex;
+        min-height: 46px;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 0 17px;
+        border: 0;
+        border-radius: 9px;
+        background: #b0f36e;
+        color: #11170b;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 720;
+        transition: background 150ms ease, transform 150ms ease;
+      }
+
+      .click-button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        background: #c4ff87;
+      }
+
+      .click-button:focus-visible {
+        outline: 3px solid #f4f6fb;
+        outline-offset: 3px;
+      }
+
+      .click-button:disabled {
+        cursor: wait;
+        opacity: 0.7;
+      }
+
+      .message {
+        grid-column: 1 / -1;
+        min-height: 21px;
+        color: #77839b;
+        font-size: 12px;
+      }
+
+      .message[data-state="error"] {
+        color: #ff9c9c;
+      }
+
+      footer {
+        padding: 22px 0;
+        color: #566078;
+        font-size: 11px;
+        text-align: center;
+      }
+
+      footer span {
+        padding-inline: 5px;
+        color: #b0f36e;
+      }
+
+      @media (max-width: 660px) {
+        .page {
+          width: min(100% - 32px, 1120px);
+        }
+
+        .screensaver {
+          min-height: 48vh;
+          flex-basis: 360px;
+          padding-top: 25px;
+        }
+
+        .counter {
+          grid-template-columns: 1fr;
+          gap: 18px;
+          padding: 22px;
+        }
+
+        .counter__action {
+          justify-content: space-between;
+        }
+
+        .message {
+          grid-column: auto;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+
+        .bounce-text {
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="screensaver" aria-label="Tej Group screensaver">
+        <div class="screensaver__label">A little motion while you’re here</div>
+        <div class="bounce-area" id="bounce-area">
+          <span class="bounce-text" id="bounce-text">Tej Group</span>
+        </div>
+        <div class="screensaver__hint">THE CLASSIC SCREEN-SAVER FEELING</div>
+      </section>
+
+      <section class="counter" aria-labelledby="counter-title">
+        <div class="counter__copy">
+          <span class="eyebrow">COMMUNITY COUNTER</span>
+          <h1 id="counter-title">Make the number move, too.</h1>
+          <p>Every click is counted by a small serverless API.</p>
+        </div>
+        <div class="counter__action">
+          <div class="count" aria-live="polite">
+            <span class="count__value" id="count-value">—</span>
+            <span class="count__label">total clicks</span>
+          </div>
+          <button class="click-button" id="click-button" type="button">
+            <span>Count my click</span>
+            <span aria-hidden="true">↗</span>
+          </button>
+        </div>
+        <p class="message" id="message" role="status">Connect your API endpoint to enable the counter.</p>
+      </section>
+      <footer>Made to keep moving <span aria-hidden="true">·</span> test 1</footer>
+    </main>
+    <script>const API_ENDPOINT = "https://<id>.execute-api.ap-south-1.amazonaws.com/test-stage/click";
+
+const area = document.querySelector("#bounce-area");
+const text = document.querySelector("#bounce-text");
+const button = document.querySelector("#click-button");
+const countValue = document.querySelector("#count-value");
+const message = document.querySelector("#message");
+
+const colors = ["#b0f36e", "#73d9ff", "#ff9e7a", "#c3a3ff", "#ffe277"];
+let x = area.clientWidth * 0.08;
+let y = area.clientHeight * 0.35;
+let velocityX = 0.12;
+let velocityY = 0.09;
+let colorIndex = 0;
+let lastFrame = 0;
+
+function animate(time) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  const elapsed = Math.min(time - lastFrame || 16, 32);
+  lastFrame = time;
+  const maxX = Math.max(0, area.clientWidth - text.offsetWidth);
+  const maxY = Math.max(0, area.clientHeight - text.offsetHeight);
+
+  x += velocityX * elapsed;
+  y += velocityY * elapsed;
+
+  if (x <= 0 || x >= maxX) {
+    x = Math.max(0, Math.min(x, maxX));
+    velocityX *= -1;
+    colorIndex = (colorIndex + 1) % colors.length;
+    text.style.color = colors[colorIndex];
+  }
+
+  if (y <= 0 || y >= maxY) {
+    y = Math.max(0, Math.min(y, maxY));
+    velocityY *= -1;
+    colorIndex = (colorIndex + 1) % colors.length;
+    text.style.color = colors[colorIndex];
+  }
+
+  text.style.transform = `translate(${x}px, ${y}px)`;
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
+
+if (API_ENDPOINT) {
+  message.textContent = "Ready. Your clicks are saved to the shared counter.";
+}
+
+button.addEventListener("click", async () => {
+  if (!API_ENDPOINT) {
+    message.dataset.state = "error";
+    message.textContent = "Set API_ENDPOINT in index.html to your API Gateway URL to enable the counter.";
+    return;
+  }
+
+  button.disabled = true;
+  message.dataset.state = "";
+  message.textContent = "Saving your click…";
+
+  try {
+    const response = await fetch(API_ENDPOINT, { method: "POST" });
+    if (!response.ok) {
+      throw new Error(`The counter API returned HTTP ${response.status}.`);
+    }
+
+    const result = await response.json();
+    if (!Number.isFinite(result.count)) {
+      throw new Error("The counter API response did not include a numeric count.");
+    }
+
+    countValue.textContent = result.count.toLocaleString();
+    message.textContent = "Your click was counted. Thanks for stopping by!";
+  } catch (error) {
+    message.dataset.state = "error";
+    message.textContent = `Could not update the counter. ${error.message}`;
+  } finally {
+    button.disabled = false;
+  }
+});
+</script>
+  </body>
+</html>
